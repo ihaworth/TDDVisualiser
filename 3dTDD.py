@@ -24,10 +24,10 @@ class TDDPlot:
                 point[1] + delta[1],
                 point[2] + delta[2])
 
-    def plot_line(self, current_point, new_point, colour):
-        plt.plot([current_point[0], new_point[0]],
-                 [current_point[1], new_point[1]],
-                 [current_point[2], new_point[2]], 'o' + colour + '-')
+    def plot_line(self, from_point, to_point, colour):
+        plt.plot([from_point[0], to_point[0]],
+                 [from_point[1], to_point[1]],
+                 [from_point[2], to_point[2]], 'o' + colour + '-')
 
     def plot_step(self, delta, colour):
         new_point = self.apply_delta(self.current_point, delta)
