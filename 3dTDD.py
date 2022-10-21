@@ -14,102 +14,87 @@ ax.set_ylabel('Features')
 ax.set_zlabel('Complexity')
 
 
-def apply_delta(point, delta):
-    return (point[0] + delta[0],
-            point[1] + delta[1],
-            point[2] + delta[2])
+class TDDPlot:
+    def __init__(self, initial_point) -> None:
+        super().__init__()
+        self.current_point = initial_point
+
+    def apply_delta(self, point, delta):
+        return (point[0] + delta[0],
+                point[1] + delta[1],
+                point[2] + delta[2])
+
+    def plot_line(self, current_point, new_point, colour):
+        plt.plot([current_point[0], new_point[0]],
+                 [current_point[1], new_point[1]],
+                 [current_point[2], new_point[2]], 'o' + colour + '-')
+
+    def red(self):
+        # Red/Test
+        new_point = self.apply_delta(self.current_point, (step, 0.0, 0.0))
+        self.plot_line(self.current_point, new_point, 'r')
+        self.current_point = new_point
+        return self
+
+    def green(self):
+        # Green/Feature + Complexity
+        new_point = self.apply_delta(self.current_point, (0.0, step, step))
+        self.plot_line(self.current_point, new_point, 'g')
+        self.current_point = new_point
+        return self
+
+    def refactor(self):
+        # Refactor/Reduce Complexity
+        new_point = self.apply_delta(self.current_point, (0.0, 0.0, -small_step))
+        self.plot_line(self.current_point, new_point, 'b')
+        self.current_point = new_point
+        return self
+
+    def backfill_test(self):
+        # Green/Feature + Complexity
+        new_point = self.apply_delta(self.current_point, (step, 0.0, 0.0))
+        self.plot_line(self.current_point, new_point, 'g')
+        self.current_point = new_point
+        return self
 
 
-def plot_line(current_point, new_point, colour):
-    plt.plot([current_point[0], new_point[0]],
-             [current_point[1], new_point[1]],
-             [current_point[2], new_point[2]], 'o' + colour + '-')
+simple_tdd_plot = TDDPlot((0.0, 0.0, 0.0))
 
+simple_tdd_plot.\
+    red().green().\
+    red().green().\
+    red().green().\
+    refactor().\
+    refactor().\
+    refactor().\
+    red().green().\
+    red().green().\
+    red().green().\
+    refactor().\
+    refactor().\
+    refactor()
 
-def red(current_point):
-    # Red/Test
-    new_point = apply_delta(current_point, (step, 0.0, 0.0))
-    plot_line(current_point, new_point, 'r')
-    return new_point
-
-
-def green(current_point):
-    # Green/Feature + Complexity
-    new_point = apply_delta(current_point, (0.0, step, step))
-    plot_line(current_point, new_point, 'g')
-    return new_point
-
-
-def refactor(current_point):
-    # Refactor/Reduce Complexity
-    new_point = apply_delta(current_point, (0.0, 0.0, -small_step))
-    plot_line(current_point, new_point, 'b')
-    return new_point
-
-def backfill_test(current_point):
-    # Green/Feature + Complexity
-    new_point = apply_delta(current_point, (step, 0.0, 0.0))
-    plot_line(current_point, new_point, 'g')
-    return new_point
-
-
-
-current_point = (0.0, 0.0, 0.0)
-
-current_point = red(current_point)
-current_point = green(current_point)
-
-current_point = red(current_point)
-current_point = green(current_point)
-
-current_point = red(current_point)
-current_point = green(current_point)
-
-current_point = refactor(current_point)
-current_point = refactor(current_point)
-current_point = refactor(current_point)
-
-current_point = red(current_point)
-current_point = green(current_point)
-
-current_point = red(current_point)
-current_point = green(current_point)
-
-current_point = red(current_point)
-current_point = green(current_point)
-
-current_point = refactor(current_point)
-current_point = refactor(current_point)
-current_point = refactor(current_point)
-
-
-current_point = (0.0, 9.0, 9.0)
-
-current_point = backfill_test(current_point)
-current_point = backfill_test(current_point)
-current_point = backfill_test(current_point)
-current_point = backfill_test(current_point)
-current_point = backfill_test(current_point)
-current_point = backfill_test(current_point)
-current_point = backfill_test(current_point)
-
-current_point = refactor(current_point)
-current_point = refactor(current_point)
-current_point = refactor(current_point)
-current_point = refactor(current_point)
-current_point = refactor(current_point)
-current_point = refactor(current_point)
-current_point = refactor(current_point)
-current_point = refactor(current_point)
-current_point = refactor(current_point)
-current_point = refactor(current_point)
-current_point = refactor(current_point)
-current_point = refactor(current_point)
-
+legacy_rescue_plot = TDDPlot((0.0, 9.0, 9.0)).\
+    backfill_test().\
+    backfill_test().\
+    backfill_test().\
+    backfill_test().\
+    backfill_test().\
+    backfill_test().\
+    backfill_test().\
+    refactor().\
+    refactor().\
+    refactor().\
+    refactor().\
+    refactor().\
+    refactor().\
+    refactor().\
+    refactor().\
+    refactor().\
+    refactor()
 
 plt.show()
 
-# Interaction with scene (rotation)
+# Interaction with scene (rotation) - command line ok, not PyCharm not... need to work out why
 # Gradually reveal plot (using spacebar?)
-# Other plots (Gilded Rose)
 # Plot from a git repo? Commits need to start with Red, Green or Refactor?
