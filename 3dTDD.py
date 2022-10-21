@@ -29,33 +29,27 @@ class TDDPlot:
                  [current_point[1], new_point[1]],
                  [current_point[2], new_point[2]], 'o' + colour + '-')
 
-    def red(self):
-        # Red/Test
-        new_point = self.apply_delta(self.current_point, (step, 0.0, 0.0))
-        self.plot_line(self.current_point, new_point, 'r')
+    def plot_step(self, delta, colour):
+        new_point = self.apply_delta(self.current_point, delta)
+        self.plot_line(self.current_point, new_point, colour)
         self.current_point = new_point
         return self
+
+    def red(self):
+        # Add red Test
+        return self.plot_step((step, 0.0, 0.0), 'r')
 
     def green(self):
-        # Green/Feature + Complexity
-        new_point = self.apply_delta(self.current_point, (0.0, step, step))
-        self.plot_line(self.current_point, new_point, 'g')
-        self.current_point = new_point
-        return self
+        # Add Feature + Complexity
+        return self.plot_step((0.0, step, step), 'g')
 
     def refactor(self):
-        # Refactor/Reduce Complexity
-        new_point = self.apply_delta(self.current_point, (0.0, 0.0, -small_step))
-        self.plot_line(self.current_point, new_point, 'b')
-        self.current_point = new_point
-        return self
+        # Reduce Complexity
+        return self.plot_step((0.0, 0.0, -small_step), 'b')
 
     def backfill_test(self):
-        # Green/Feature + Complexity
-        new_point = self.apply_delta(self.current_point, (step, 0.0, 0.0))
-        self.plot_line(self.current_point, new_point, 'g')
-        self.current_point = new_point
-        return self
+        # Add green Test
+        return self.plot_step((step, 0.0, 0.0), 'g')
 
 
 simple_tdd_plot = TDDPlot((0.0, 0.0, 0.0))
