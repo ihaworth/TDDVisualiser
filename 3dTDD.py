@@ -88,7 +88,3 @@ legacy_rescue_plot = TDDPlot((0.0, 9.0, 9.0)).\
     refactor()
 
 plt.show()
-
-# Interaction with scene (rotation) - command line ok, not PyCharm not... need to work out why
-# Gradually reveal plot (using spacebar?)
-# Plot from a git repo? Commits need to start with Red, Green or Refactor?
